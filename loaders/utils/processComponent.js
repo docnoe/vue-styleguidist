@@ -3,7 +3,6 @@
 const fs = require('fs');
 const path = require('path');
 const requireIt = require('./requireIt');
-const logger = require('glogg')('rsg');
 const vueDocLoader = path.resolve(__dirname, '../vuedoc-loader.js');
 
 /**
@@ -40,9 +39,13 @@ module.exports = function processComponent(filepath, config) {
 	if (isVueFile(filepath)) {
 		props = requireIt(`!!${vueDocLoader}!${filepath}`);
 	} else {
-		const message = `Error when parsing ${filepath}:\n\n` + 'Only can parse files .vue:\n';
-		logger.debug(message);
-		throw new Error(message);
+		const notVueContent = fs.readFileSync(filepath);
+		const tmpFilePath = path.resolve('/tmp/', path.basename(filepath) + '.tmp');
+		fs.writeFileSync(tmpFilePath, `<script>${notVueContent}</script>`);
+		props = requireIt(`!!${vueDocLoader}!${tmpFilePath}`);
+		// const message = `Error when parsing ${filepath}:\n\n` + 'Only can parse files .vue:\n';
+		// logger.debug(message);
+		// throw new Error(message);
 	}
 	const examplesFile = config.getExampleFilename(filepath);
 	const componentMetadataPath = getComponentMetadataPath(filepath);
