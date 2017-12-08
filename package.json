@@ -149,8 +149,7 @@
     "compile:watch": "babel --ignore '*.spec.js' --watch -d lib/ src/ --plugins=transform-class-properties,transform-object-rest-spread --presets=env,react",
     "build": "node bin/styleguidist.js build --config examples/basic/styleguide.config.js",
     "prepublish": "npm run compile",
-    "publish": "npm run build",
-    "precommit": "lint-staged"
+    "publish": "npm run build"
   },
   "release": {
     "analyzeCommits": "semantic-release-tamia/analyzeCommits",
