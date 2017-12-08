@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const requireIt = require('./requireIt');
 const vueDocLoader = path.resolve(__dirname, '../vuedoc-loader.js');
+const pluginLoader = path.resolve(__dirname, '../plugin-loader.js');
 
 /**
  * References the filepath of the metadata file.
@@ -39,10 +40,11 @@ module.exports = function processComponent(filepath, config) {
 	if (isVueFile(filepath)) {
 		props = requireIt(`!!${vueDocLoader}!${filepath}`);
 	} else {
-		const notVueContent = fs.readFileSync(filepath);
-		const tmpFilePath = path.resolve('/tmp/', path.basename(filepath) + '.tmp');
-		fs.writeFileSync(tmpFilePath, `<script>${notVueContent}</script>`);
-		props = requireIt(`!!${vueDocLoader}!${tmpFilePath}`);
+		props = requireIt(`!!${pluginLoader}!${filepath}`);
+		// const notVueContent = fs.readFileSync(filepath);
+		// const tmpFilePath = path.resolve('/tmp/', path.basename(filepath) + '.tmp');
+		// fs.writeFileSync(tmpFilePath, `<script>${notVueContent}</script>`);
+		// props = requireIt(`!!${vueDocLoader}!${tmpFilePath}`);
 		// const message = `Error when parsing ${filepath}:\n\n` + 'Only can parse files .vue:\n';
 		// logger.debug(message);
 		// throw new Error(message);
