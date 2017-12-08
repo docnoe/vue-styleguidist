@@ -146,7 +146,6 @@
     "lint-staged": "lint-staged",
     "precompile": "rimraf lib/",
     "compile": "babel --ignore '*.spec.js' -d lib/ src/ --plugins=transform-class-properties,transform-object-rest-spread --presets=env,react",
-    "install": "npm run compile",
     "compile:watch": "babel --ignore '*.spec.js' --watch -d lib/ src/ --plugins=transform-class-properties,transform-object-rest-spread --presets=env,react",
     "build": "node bin/styleguidist.js build --config examples/basic/styleguide.config.js",
     "prepublish": "npm run compile",
